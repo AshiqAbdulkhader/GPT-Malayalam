@@ -1,3 +1,4 @@
 ml_corpus/
 tokenized_data/
 wandb/
+gpt2_malayalam/

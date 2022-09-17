@@ -8,7 +8,7 @@ tokenizer = GPT2Tokenizer.from_pretrained(output_dir)
 # load model
 model = TFGPT2LMHeadModel.from_pretrained(output_dir)
 
-text = "തമിഴ്‌നാട്ടിൽ നിന്നു സഹ്യപർവ്വതം"
+text = "മലയാളത്തിലെ പ്രധാന ഭാഷയാണ്"
 input_ids = tokenizer.encode(text, return_tensors='tf')
 
 beam_output = model.generate(

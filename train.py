@@ -62,9 +62,24 @@ metric = tf.keras.metrics.SparseCategoricalAccuracy('accuracy')
 model.compile(optimizer=optimizer, loss=[
               loss, *[None] * model.config.n_layer], metrics=[metric])
 
+# callbacks
+checkpoint_filepath = '/checkpoint'
+if not os.path.exists(checkpoint_filepath):
+    os.makedirs(checkpoint_filepath)
+
+early_stopping = tf.keras.callbacks.EarlyStopping(
+    monitor='val_loss', patience=3, restore_best_weights=True)
+
+model_checkpoint_callback = tf.keras.callbacks.ModelCheckpoint(
+    filepath=checkpoint_filepath,
+    save_weights_only=True,
+    monitor='val_loss',
+    mode='min',
+    save_best_only=True)
 # train model
 num_epoch = 10
-history = model.fit(dataset, epochs=num_epoch, verbose=1)
+history = model.fit(dataset, epochs=num_epoch, verbose=1, callbacks=[
+                    model_checkpoint_callback, early_stopping])
 wandb.log({"loss": history.history['loss'][-1]})
 
 # save model
